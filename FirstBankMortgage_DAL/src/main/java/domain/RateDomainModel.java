@@ -4,15 +4,23 @@ package domain;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import base.RateDAL;
+
 public class RateDomainModel implements Serializable {
 	
-	private int RateID;
-	private int MinCreditScore;
-	private double InterestRate;
+	protected int RateID;
+	protected int MinCreditScore;
+	protected double InterestRate;
 	
-	public RateDomainModel()
-	{
+	public RateDomainModel(RateDomainModel TBLRATE){
+		super();
+		RateID = TBLRATE.getRateID();
+		MinCreditScore = TBLRATE.getMinCreditScore();
+		InterestRate = TBLRATE.getInterestRate();
 		
+	}
+	public RateDomainModel(){
+
 	}
 	public int getRateID() {
 		return RateID;

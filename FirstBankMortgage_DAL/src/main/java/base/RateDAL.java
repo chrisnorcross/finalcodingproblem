@@ -11,18 +11,52 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import domain.RateDomainModel;
+import domain.StudentDomainModel;
 import util.HibernateUtil;
 
 public class RateDAL {
 
 
-	public static double getRate(int GivenCreditScore) {
-		//FinalExam - please implement		
-		// Figure out which row makes sense- return back the 
-		// right interest rate from the table based on the given credit score
-		
-		//FinalExam - obviously change the return value
+	public static ArrayList<RateDomainModel> getRules() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = null;
+		ArrayList<RateDomainModel> Rules = new ArrayList<RateDomainModel>();
+
+		try {
+			tx = session.beginTransaction();
+
+			List rules = session.createQuery("FROM RateDomainModel").list();
+			for (Iterator iterator = rules.iterator(); iterator.hasNext();) {
+				RateDomainModel rate = (RateDomainModel) iterator.next();
+				Rules.add(rate);
+
+			}
+
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return Rules;
+
+	}
+	public static double getRate(int score){
+		for (RateDomainModel R: RateDAL.getRules()){
+			if(R.getRateID()== 1){
+				return 5;
+			}else if(R.getRateID()==2){
+				return 4.5;
+			}else if(R.getRateID()==3){
+				return 4;
+			}else if(R.getRateID()==4){
+				return 3.75;
+			}else{
+				return 3.5;
+			}
+		}
 		return 0;
 	}
-
 }
